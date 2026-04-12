@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class IBancoAnalitico(ABC):
+class IBanco(ABC):
 
     @abstractmethod
     def checar_conexao(self) -> bool:

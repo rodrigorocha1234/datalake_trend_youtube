@@ -1,10 +1,10 @@
 import socket
 
 from src.config.config import Config
-from src.servicos.servico_s3.is3_base import IS3Base
+from src.servicos.banco_analitico.ibanco import IBanco
 
 
-class S3Base(IS3Base):
+class S3Base(IBanco):
     def __init__(self) -> None:
         self.__host = Config.HOST_S3
         self.__port = int(Config.PORT_S3)
