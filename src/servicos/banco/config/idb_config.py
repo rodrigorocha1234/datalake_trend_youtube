@@ -12,5 +12,5 @@ class IDbConfig(ABC, Generic[TConn, TDriver]):
         raise NotImplementedError
 
     @abstractmethod
-    def obter_parametros_conexao(self):
+    def obter_parametros_conexao(self) -> Tuple[Tuple[Any, ...], Dict[str, Any]]:
         raise NotImplementedError
