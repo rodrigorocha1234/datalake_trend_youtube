@@ -1,14 +1,13 @@
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Tuple, Type
 
-from minio import Minio
+from minio.api import Minio
 
 from src.config.config import Config
-from src.servicos.banco.interfaces.ioperacao import IOperacao
-from src.servicos.banco.interfaces.protocolo import MinioConnect
+from src.servicos.banco.config.idb_config import IDbConfig
 
 
-class ConfigS3Minio(IOperacao):
-    def obter_driver(self) -> MinioConnect:
+class ConfigS3Minio(IDbConfig):
+    def obter_driver(self) -> Type[Minio]:
         return Minio
 
     def obter_parametros_conexao(self) -> Tuple[Tuple[Any, ...], Dict[str, Any]]:
@@ -20,7 +19,6 @@ class ConfigS3Minio(IOperacao):
         )
 
         return ((conn_str,), {})
-
 
 #   def checar_conexao(self) -> bool:
 #        try:

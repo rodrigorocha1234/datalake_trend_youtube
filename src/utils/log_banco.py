@@ -1,18 +1,17 @@
-
 import logging
 from abc import ABC, abstractmethod
 from typing import Literal
 
-from src.servicos.operacao_banco.config.idb_config import IDbConfig
+from src.servicos.banco.config.idb_config import IDbConfig
 
 
 class LogBanco(logging.Handler, ABC):
     def __init__(
-        self,
-        configuracao_conexao: IDbConfig,
-        debug: Literal["INFO", "WARNING", "ERROR", "CRITICAL"],
-        formato_log: str,
-        nome_pacote: str
+            self,
+            configuracao_conexao: IDbConfig,
+            debug: Literal["INFO", "WARNING", "ERROR", "CRITICAL"],
+            formato_log: str,
+            nome_pacote: str
     ):
         super().__init__()
         self._configuracao_conexao = configuracao_conexao

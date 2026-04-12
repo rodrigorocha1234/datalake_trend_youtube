@@ -3,19 +3,18 @@ import logging
 from datetime import datetime
 from typing import Literal
 
-from src.servicos.operacao_banco.config.idb_config import IDbConfig
-from src.servicos.operacao_banco.operacao.operacao_sql_server import \
-    OperacaoSqlServer
+from src.servicos.banco.banco_sql_server.operacao_sql_server import OperacaoSqlServer
+from src.servicos.banco.config.idb_config import IDbConfig
 from src.utils.log_banco import LogBanco
 
 
 class LogBancoSQLServer(LogBanco):
     def __init__(
-        self,
-        configuracao_conexao: IDbConfig,
-        debug: Literal["INFO", "WARNING", "ERROR", "CRITICAL"],
-        formato_log: str,
-        nome_pacote: str
+            self,
+            configuracao_conexao: IDbConfig,
+            debug: Literal["INFO", "WARNING", "ERROR", "CRITICAL"],
+            formato_log: str,
+            nome_pacote: str
     ):
         super().__init__(
             debug=debug,
@@ -45,20 +44,19 @@ class LogBancoSQLServer(LogBanco):
                 requisicao = str(requisicao)  # fallback seguro
 
         sql = '''
-        INSERT INTO log_aplicacao (
-            [timestamp],
-            [level],
-            [message],
-            [logger_name],
-            [filename],
-            [func_name],
-            [line_no],
-            [url],
-            [mensagem_de_excecao_tecnica],
-            [requisicao],
-            [status_code]
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        '''
+              INSERT INTO log_aplicacao ([timestamp],
+                  [ level],
+                  [message],
+                  [logger_name],
+                  [filename],
+                  [func_name],
+                  [line_no],
+                  [url],
+                  [mensagem_de_excecao_tecnica],
+                  [requisicao],
+                  [status_code])
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) \
+              '''
 
         params = (
             timestamp,

@@ -1,20 +1,8 @@
-from typing import Any, Protocol
-
+from typing import Protocol, Any, Callable
 import mssql_python
 import trino
-from minio import Minio
+from minio.api import Minio
 
-
-class MSSQLConnect(Protocol):
-    def __call__(self, *args: Any, **kwargs: Any) -> mssql_python.Connection:
-        ...
-
-
-class MinioConnect(Protocol):
-    def __call__(self, *args: Any, **kwargs: Any) -> Minio:
-        ...
-
-
-class TrinoConnect(Protocol):
-    def __call__(self, *args: Any, **kwargs: Any) -> trino.dbapi.Connection:
-        ...
+MSSQLConnect = Callable[..., mssql_python.Connection]
+TrinoConnect = Callable[..., trino.dbapi.Connection]
+MinioConnect = Callable[..., Minio]

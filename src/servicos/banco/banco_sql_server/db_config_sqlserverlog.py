@@ -3,12 +3,12 @@ from typing import Any, Dict, Tuple
 import mssql_python
 
 from src.config.config import Config
-from src.servicos.banco.interfaces.ioperacao import IOperacao
+from src.servicos.banco.config.idb_config import IDbConfig
 from src.servicos.banco.interfaces.protocolo import MSSQLConnect
 
 
 class DbConfigSQLServerLOG(
-    IOperacao
+    IDbConfig
 ):
 
     def obter_driver(self) -> MSSQLConnect:
@@ -23,5 +23,6 @@ class DbConfigSQLServerLOG(
             "Encrypt=yes;"
             "TrustServerCertificate=yes;"
         )
+        self.obter_driver()()
 
         return ((conn_str,), {})

@@ -1,11 +1,13 @@
+import trino
+
+from src.servicos.banco.config.idb_config import IDbConfig
+from src.servicos.banco.interfaces.ioperacao import IOperacao
+from src.servicos.banco.interfaces.protocolo import TrinoConnect
 
 
-from src.servicos.operacao_banco.config.idb_config import IDbConfig
+class OperacaoTrino(IOperacao):
 
-
-class OperacaoTrino:
-
-    def __init__(self, configuracao: IDbConfig):
+    def __init__(self, configuracao: IDbConfig[trino.dbapi.Connection, TrinoConnect]):
         self.__configuracao = configuracao
 
     def checar_conexao(self):
@@ -15,7 +17,6 @@ class OperacaoTrino:
         con = None
         try:
             con = driver(*args, **kwargs_conn)
-            
 
             with con.cursor() as cursor:
                 cursor.execute("SELECT 1")

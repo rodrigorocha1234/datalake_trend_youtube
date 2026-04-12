@@ -5,7 +5,7 @@ from src.servicos.banco.config.idb_config import IDbConfig
 from src.servicos.banco.interfaces.protocolo import TrinoConnect
 
 
-class DbConfigTrino(IDbConfig):
+class DbConfigTrino(IDbConfig[trino.dbapi.Connection, TrinoConnect]):
     def obter_driver(self) -> TrinoConnect:
         return trino.dbapi.connect
 
