@@ -17,4 +17,6 @@ class Config:
 
     HOST_S3: Final[str] = os.environ["HOST_S3"]
     PORT_S3: Final[str] = os.environ["PORT_S3"]
+    USER_S3: Final[str] = os.environ["ACCESS_KEY_S3"]
+    PASSWORD_S3: Final[str] = os.environ["SECRET_KEY_S3"]
     CHAVE_API_YOUTUBE: Final[str] = os.environ["CHAVE_API_YOUTUBE"]
