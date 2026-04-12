@@ -1,4 +1,5 @@
-from typing import Protocol, Any, Callable
+from typing import Callable
+
 import mssql_python
 import trino
 from minio.api import Minio
