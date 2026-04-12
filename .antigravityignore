@@ -1,0 +1,29 @@
+# Pycharm / IDE Directories
+.idea/
+.vscode/
+
+# Python Virtual Environments
+.venv/
+venv/
+env/
+.env/
+
+# Cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Databases and Data directories
+dados_sql_server/
+minio-data/
+mariadb_data/
+postgres_data/
+trino_bckp/
+hive_bck/
+
+# Others
+jars/
+*.jar
