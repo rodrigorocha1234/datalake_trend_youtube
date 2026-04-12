@@ -1,4 +1,3 @@
-from src.servicos.banco.interfaces.ioperacao import IOperacao
 from typing import Any, Tuple
 
 from src.servicos.operacao_banco.config.idb_config import IDbConfig
