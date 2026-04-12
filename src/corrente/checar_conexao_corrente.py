@@ -16,7 +16,7 @@ class ChecarConexaCorrente(Corrente):
         youtube_ok = self.__conexao_youtube.checar_conexao()
 
         if s3_ok and youtube_ok:
-            self._conexao_log.loger.info(
+            self._conexao_log.info(
                 f"{self.__class__.__name__} -> Sucesso ao executar todas as conexões (S3 e YouTube)"
             )
             return True

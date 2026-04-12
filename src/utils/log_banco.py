@@ -1,5 +1,4 @@
 
-from src.utils.Ilog_banco import IlogBanco
 import logging
 from datetime import datetime
 from typing import Literal
@@ -7,8 +6,7 @@ from typing import Literal
 from src.operacao_banco.operacao.Ioperacao import IOperacao
 
 
-class LogBanco(IlogBanco):
-
+class LogBanco(logging.Handler):
     def __init__(
         self,
         db_operacao: IOperacao,
@@ -33,6 +31,10 @@ class LogBanco(IlogBanco):
             console_handler.setFormatter(self.__formater)
             console_handler.setLevel(logging.INFO)
             self.loger.addHandler(console_handler)
+
+    @property
+    def logger(self) -> logging.Logger:
+        return self.loger
 
     def emit(self, record: logging.LogRecord) -> None:
         self.format(record)

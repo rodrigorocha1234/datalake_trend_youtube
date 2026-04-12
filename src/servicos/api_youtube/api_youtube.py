@@ -5,7 +5,7 @@ from googleapiclient.discovery import build  # type: ignore
 
 from src.config.config import Config
 from src.servicos.api_youtube.iapi_youtube import IApiYoutube
-from src.utils.log_banco import LogBanco
+from src.utils.log_repositorio_sql import LogBanco
 
 
 class YoutubeAPI(IApiYoutube):

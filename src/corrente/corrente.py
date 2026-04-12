@@ -15,17 +15,17 @@ class Corrente(ABC):
         return corrente
 
     def corrente(self, contexto: Contexto):
-        self._conexao_log.loger.info("Iniciando Pipeline")
+        self._conexao_log.logger.info("Iniciando Pipeline")
         if self.executar_processo(contexto):
-            self._conexao_log.loger.info(
+            self._conexao_log.logger.info(
                 f'{self.__class__.__name__} -> Sucesso ao executar')
             if self._proxima_corrente:
                 self._proxima_corrente.corrente(contexto)
             else:
-                self._conexao_log.loger.info(
+                self._conexao_log.logger.info(
                     f'{self.__class__.__name__} ->  Última corrente da cadeia')
         else:
-            self._conexao_log.loger.error(
+            self._conexao_log.logger.error(
                 f"ERRO ao executar pipeline {self.__class__.__name__}")
 
     @abstractmethod
