@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Generic, TypeVar, Tuple, Dict, Any
 
 TConn = TypeVar("TConn")
 TDriver = TypeVar("TDriver")
