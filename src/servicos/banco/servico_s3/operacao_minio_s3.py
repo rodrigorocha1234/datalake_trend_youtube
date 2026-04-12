@@ -3,7 +3,7 @@ from typing import Any, Tuple
 from minio import Minio
 
 from src.servicos.banco.interfaces.ioperacao import IOperacao
-from src.servicos.banco.interfaces.protocols import MinioConnect
+from src.servicos.banco.interfaces.protocolo import MinioConnect
 
 
 class OperacaoMInioS3(IOperacao):

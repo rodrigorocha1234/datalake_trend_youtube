@@ -4,7 +4,7 @@ import mssql_python
 
 from src.config.config import Config
 from src.servicos.banco.interfaces.ioperacao import IOperacao
-from src.servicos.banco.interfaces.protocols import MSSQLConnect
+from src.servicos.banco.interfaces.protocolo import MSSQLConnect
 
 
 class DbConfigSQLServerLOG(

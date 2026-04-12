@@ -7,6 +7,7 @@ conn = trino.dbapi.connect(
     catalog="system",
     schema="runtime",
 )
+print(type(conn))
 
 cur = conn.cursor()
 cur.execute("SELECT 1")

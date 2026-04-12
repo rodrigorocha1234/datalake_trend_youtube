@@ -4,7 +4,7 @@ from minio import Minio
 
 from src.config.config import Config
 from src.servicos.banco.interfaces.ioperacao import IOperacao
-from src.servicos.banco.interfaces.protocols import MinioConnect
+from src.servicos.banco.interfaces.protocolo import MinioConnect
 
 
 class ConfigS3Minio(IOperacao):
