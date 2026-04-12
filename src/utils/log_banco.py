@@ -1,4 +1,5 @@
 
+from src.utils.Ilog_banco import IlogBanco
 import logging
 from datetime import datetime
 from typing import Literal
@@ -6,7 +7,7 @@ from typing import Literal
 from src.operacao_banco.operacao.Ioperacao import IOperacao
 
 
-class LogBanco(logging.Handler):
+class LogBanco(IlogBanco):
 
     def __init__(
         self,

@@ -1,13 +1,12 @@
-from src.servicos.banco_analitico.ibanco import IBanco
 from src.contexto.contexto import Contexto
 from src.corrente.corrente import Corrente
 from src.servicos.api_youtube.iapi_youtube import IApiYoutube
-
-from src.utils.log_banco import LogBanco
+from src.servicos.banco_analitico.ibanco import IBanco
+from src.utils.Ilog_banco import IlogBanco
 
 
 class ChecarConexaCorrente(Corrente):
-    def __init__(self, conexao_log: LogBanco, conexao_s3: IBanco, conexao_youtube: IApiYoutube) -> None:
+    def __init__(self, conexao_log: IlogBanco, conexao_s3: IBanco, conexao_youtube: IApiYoutube) -> None:
         super().__init__(conexao_log)
         self.__conexao_s3 = conexao_s3
         self.__conexao_youtube = conexao_youtube

@@ -1,9 +1,19 @@
 {
     "python-envs.pythonProjects": [
         {
-            "path": "src/operacao_banco/config/idb_config.py",
+            "path": "./",
             "envManager": "ms-python.python:venv",
             "packageManager": "ms-python.python:pip"
         }
+    ],
+
+    "python.languageServer": "Pylance",
+    "editor.rename.enablePreview": true,
+    "editor.linkedEditing": true,
+    "python.analysis.typeCheckingMode": "strict",
+    "python.analysis.autoImportCompletions": true,
+
+    "python.analysis.extraPaths": [
+        "./src"
     ]
 }

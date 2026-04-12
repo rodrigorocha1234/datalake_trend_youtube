@@ -1,12 +1,12 @@
-from src.contexto.contexto import Contexto
-from typing import Optional
 from abc import ABC, abstractmethod
+from typing import Optional
 
-from src.utils.log_banco import LogBanco
+from src.contexto.contexto import Contexto
+from src.utils.Ilog_banco import IlogBanco
 
 
 class Corrente(ABC):
-    def __init__(self, conexao_log: LogBanco):
+    def __init__(self, conexao_log: IlogBanco):
         self._conexao_log = conexao_log
         self._proxima_corrente: Optional["Corrente"] = None
 
