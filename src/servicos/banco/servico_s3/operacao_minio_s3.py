@@ -13,5 +13,5 @@ class OperacaoMInioS3(IOperacao):
     def checar_conexao(self) -> bool:
         return True
 
-    def salvar_dados(self, sql: str, param: Tuple[Any, ...]) -> None:
+    def salvar_dados(self, **kwargs) -> None:
         pass
