@@ -1,3 +1,4 @@
+from src.config.config import Config
 from typing import Any, Dict, Tuple
 
 from minio import Minio
@@ -12,7 +13,14 @@ class S3Minio(IDbConfig[Minio, MinioConnect]):
         return Minio
 
     def obter_parametros_conexao(self) -> Tuple[Tuple[Any, ...], Dict[str, Any]]:
-        raise NotImplementedError
+        conn_str = (
+            Config.HOST_S3,
+            Config.PORT_S3,
+            Config.USER_S3,
+            Config.PASSWORD_S3
+        )
+
+        return ((conn_str,), {})
 
 
 #   def checar_conexao(self) -> bool:
