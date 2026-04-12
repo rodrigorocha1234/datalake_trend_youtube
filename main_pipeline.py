@@ -14,15 +14,6 @@ db_config_log = DbConfigSQLServerLOG()
 db_operacao_log = OperacaoSqlServerLOG(conexao=db_config_log)
 conexao_s3 = S3Base()
 
-loger = LogBanco(
-    db_operacao=db_operacao_log,
-    debug="INFO",
-    formato_log="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    nome_pacote="main_pipeline",
-)
-
-api_youtube = YoutubeAPI(conexao_log=loger)
-contexto = Contexto()
 
 config_log = LogBanco(
     db_operacao=db_operacao_log,
@@ -30,6 +21,10 @@ config_log = LogBanco(
     formato_log="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     nome_pacote="main_pipeline",
 )
+
+
+api_youtube = YoutubeAPI(conexao_log=config_log)
+contexto = Contexto()
 
 
 p1 = ChecarConexaCorrente(
