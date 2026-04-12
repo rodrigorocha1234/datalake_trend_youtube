@@ -13,6 +13,7 @@ from src.utils.Ilog_banco import IlogBanco
 class YoutubeAPI(IApiYoutube):
 
     def __init__(self, conexao_log: IlogBanco):
+
         self.__youtube = build(
             'youtube', 'v3', developerKey=Config.CHAVE_API_YOUTUBE)
         self.__conexao_log = conexao_log

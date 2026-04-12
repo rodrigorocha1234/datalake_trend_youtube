@@ -1,21 +1,21 @@
 
 import logging
-from datetime import datetime
+from abc import ABC, abstractmethod
 from typing import Literal
 
-from src.operacao_banco.operacao.Ioperacao import IOperacao
+from src.operacao_banco.config.idb_config import IDbConfig
 
 
-class LogBanco(logging.Handler):
+class LogBanco(logging.Handler, ABC):
     def __init__(
         self,
-        db_operacao: IOperacao,
+        configuracao_conexao: IDbConfig,
         debug: Literal["INFO", "WARNING", "ERROR", "CRITICAL"],
         formato_log: str,
         nome_pacote: str
     ):
         super().__init__()
-        self.__db_operacao = db_operacao
+        self._configuracao_conexao = configuracao_conexao
 
         self.loger = logging.getLogger(nome_pacote)
         self.__FORMATO_LOG = formato_log
@@ -36,45 +36,6 @@ class LogBanco(logging.Handler):
     def logger(self) -> logging.Logger:
         return self.loger
 
+    @abstractmethod
     def emit(self, record: logging.LogRecord) -> None:
-        self.format(record)
-
-        timestamp = datetime.fromtimestamp(record.created)
-
-        status_code = getattr(record, 'status_code', None)
-        mensagem_de_excecao_tecnica = getattr(
-            record, 'mensagem_de_excecao_tecnica', None)
-        requisicao = getattr(record, 'requisicao', None)
-        url = getattr(record, 'url', None)
-
-        sql = '''
-        INSERT INTO logs (
-            [timestamp],
-            [level],
-            [message],
-            [logger_name],
-            [filename],
-            [func_name],
-            [line_no],
-            [url],
-            [mensagem_de_excecao_tecnica],
-            [requisicao],
-            [status_code]
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        '''
-
-        params = (
-            timestamp,
-            record.levelname,
-            record.getMessage(),
-            record.name,
-            record.filename,
-            record.funcName,
-            record.lineno,
-            url,
-            mensagem_de_excecao_tecnica,
-            requisicao,
-            status_code
-        )
-
-        self.__db_operacao.salvar_dados(sql=sql, param=params)
+        pass

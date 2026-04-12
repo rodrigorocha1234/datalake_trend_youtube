@@ -1,14 +1,13 @@
-from src.config.config import Config
 from typing import Any, Dict, Tuple
 
 from minio import Minio
 
+from src.config.config import Config
 from src.operacao_banco.config.idb_config import IDbConfig
 from src.operacao_banco.config.protocols import MinioConnect
 
 
-class S3Minio(IDbConfig[Minio, MinioConnect]):
-
+class ConfigS3Minio(IDbConfig[Minio, MinioConnect]):
     def obter_driver(self) -> MinioConnect:
         return Minio
 
