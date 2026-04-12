@@ -11,15 +11,19 @@ class OperacaoSqlServerLOG:
     def __init__(self, conexao: IDbConfig[mssql_python.Connection, MSSQLConnect]):
         self.__conexao = conexao
 
-    def salvar_consulta(self, sql: str, param: Tuple[Any, ...]) -> None:
+    def salvar_dados(self, dado: Tuple[str, Tuple[Any, ...]], **kwargs: Any) -> None:
+        sql, param = dado
+
         driver = self.__conexao.obter_driver()
-        args, kwargs = self.__conexao.obter_parametros_conexao()
-        con = driver(*args, **kwargs)
+        args, kwargs_conn = self.__conexao.obter_parametros_conexao()
+
+        con = driver(*args, **kwargs_conn)
+
         try:
             with con.cursor() as cursor:
                 cursor.execute(sql, param)
                 con.commit()
         except Exception as e:
-            print(e)
+            raise RuntimeError(f"Erro ao executar SQL: {sql}") from e
         finally:
             con.close()

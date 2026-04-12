@@ -74,4 +74,4 @@ class LogBanco(logging.Handler):
             status_code
         )
 
-        self.__db_operacao.salvar_consulta(sql=sql, param=params)
+        self.__db_operacao.salvar_dados(sql=sql, param=params)
