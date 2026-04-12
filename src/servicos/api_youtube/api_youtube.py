@@ -1,3 +1,5 @@
+
+
 from datetime import datetime
 from typing import Dict, Generator
 
@@ -5,12 +7,12 @@ from googleapiclient.discovery import build  # type: ignore
 
 from src.config.config import Config
 from src.servicos.api_youtube.iapi_youtube import IApiYoutube
-from src.utils.log_repositorio_sql import LogBanco
+from src.utils.Ilog_banco import IlogBanco
 
 
 class YoutubeAPI(IApiYoutube):
 
-    def __init__(self, conexao_log: LogBanco):
+    def __init__(self, conexao_log: IlogBanco):
         self.__youtube = build(
             'youtube', 'v3', developerKey=Config.CHAVE_API_YOUTUBE)
         self.__conexao_log = conexao_log
@@ -26,7 +28,7 @@ class YoutubeAPI(IApiYoutube):
             ).execute()
             return True
         except Exception as e:
-            self.__conexao_log.loger.error('Erro ao conectar com a API do YouTube', extra={
+            self.__conexao_log.logger.error('Erro ao conectar com a API do YouTube', extra={
                 "descricao": "Erro ao conectar com a API do YouTube",
                 "url": 'url Vídeo',
                 "codigo": 500,
@@ -53,7 +55,7 @@ class YoutubeAPI(IApiYoutube):
 
             response = request.execute()
 
-            self.__conexao_log.loger.info('Sucesso ao recuperar playlist', extra={
+            self.__conexao_log.logger.info('Sucesso ao recuperar playlist', extra={
                 "descricao": "Consulta vídeo YouTube",
                 "url": 'url Vídeo',
                 "codigo": 200,
