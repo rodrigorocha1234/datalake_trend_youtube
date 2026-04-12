@@ -20,3 +20,10 @@ class Config:
     USER_S3: Final[str] = os.environ["ACCESS_KEY_S3"]
     PASSWORD_S3: Final[str] = os.environ["SECRET_KEY_S3"]
     CHAVE_API_YOUTUBE: Final[str] = os.environ["CHAVE_API_YOUTUBE"]
+
+    HOST_TRINO: Final[str] = os.environ["HOST_TRINO"]
+    PORT_TRINO: Final[str] = os.environ["PORT_TRINO"]
+    USER_TRINO: Final[str] = os.environ["USER_TRINO"]
+    CATALOG_TRINO: Final[str] = os.environ["CATALOG_TRINO"]
+    SCHEMA_TRINO: Final[str] = os.environ["SCHEMA_TRINO"]
+
