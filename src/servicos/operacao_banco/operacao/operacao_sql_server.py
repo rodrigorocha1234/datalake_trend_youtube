@@ -2,8 +2,8 @@ from typing import Any, Tuple
 
 import mssql_python
 
-from src.operacao_banco.config.idb_config import IDbConfig
-from src.operacao_banco.config.protocols import MSSQLConnect
+from src.servicos.operacao_banco.config.idb_config import IDbConfig
+from src.servicos.operacao_banco.config.protocols import MSSQLConnect
 
 
 class OperacaoSqlServer:

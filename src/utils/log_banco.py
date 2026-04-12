@@ -3,7 +3,7 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Literal
 
-from src.operacao_banco.config.idb_config import IDbConfig
+from src.servicos.operacao_banco.config.idb_config import IDbConfig
 
 
 class LogBanco(logging.Handler, ABC):

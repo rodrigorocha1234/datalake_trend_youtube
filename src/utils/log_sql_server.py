@@ -1,10 +1,11 @@
 
-from src.operacao_banco.operacao.operacao_sql_server import OperacaoSqlServer
 import logging
 from datetime import datetime
 from typing import Literal
 
-from src.operacao_banco.config.idb_config import IDbConfig
+from src.servicos.operacao_banco.config.idb_config import IDbConfig
+from src.servicos.operacao_banco.operacao.operacao_sql_server import \
+    OperacaoSqlServer
 from src.utils.log_banco import LogBanco
 
 

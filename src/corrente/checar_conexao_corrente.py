@@ -1,18 +1,20 @@
+from src.servicos.operacao_banco.operacao.ioperacao import IOperacao
 from src.contexto.contexto import Contexto
 from src.corrente.corrente import Corrente
+
 from src.servicos.api_youtube.iapi_youtube import IApiYoutube
-from src.servicos.banco_analitico.ibanco import IBanco
+
 from src.utils.Ilog_banco import IlogBanco
 
 
 class ChecarConexaCorrente(Corrente):
-    def __init__(self, conexao_log: IlogBanco, conexao_s3: IBanco, conexao_youtube: IApiYoutube) -> None:
+    def __init__(self, conexao_log: IlogBanco, operacao_s3: IOperacao, conexao_youtube: IApiYoutube) -> None:
         super().__init__(conexao_log)
-        self.__conexao_s3 = conexao_s3
+        self.__operacao_s3 = operacao_s3
         self.__conexao_youtube = conexao_youtube
 
     def executar_processo(self, contexto: Contexto) -> bool:
-        s3_ok = self.__conexao_s3.checar_conexao()
+        s3_ok = self.__operacao_s3.checar_conexao()
         youtube_ok = self.__conexao_youtube.checar_conexao()
 
         if s3_ok and youtube_ok:

@@ -3,8 +3,8 @@ from typing import Any, Dict, Tuple
 from minio import Minio
 
 from src.config.config import Config
-from src.operacao_banco.config.idb_config import IDbConfig
-from src.operacao_banco.config.protocols import MinioConnect
+from src.servicos.operacao_banco.config.idb_config import IDbConfig
+from src.servicos.operacao_banco.config.protocols import MinioConnect
 
 
 class ConfigS3Minio(IDbConfig[Minio, MinioConnect]):
