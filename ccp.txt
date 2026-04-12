@@ -1,0 +1,202 @@
+services:
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql_server_db
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrongP@ssw0rd!"
+      MSSQL_TCP_CERT: "TrustServerCertificate"
+      TZ: "America/Sao_Paulo"
+    volumes:
+      - ./dados_sql_server:/var/opt/mssql
+    restart: always
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.22
+
+
+  postgres:
+    image: postgres:15
+    container_name: superset_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: superset
+      POSTGRES_USER: superset
+      POSTGRES_PASSWORD: superset
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.23
+
+  redis:
+    image: redis:7
+    container_name: superset_redis
+    restart: always
+    expose:
+      - "6379"
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.24
+
+  superset:
+    build:
+      context: ./superset
+      dockerfile: superset.Dockerfile
+
+    container_name: superset
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./superset/superset_config.py:/app/superset_config.py
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.25
+
+
+  superset-worker:
+    build:
+      context: ./superset
+      dockerfile: superset.Dockerfile
+    container_name: superset_worker
+    restart: always
+    depends_on:
+      - redis
+      - postgres
+    command: celery --app=superset.tasks.celery_app:app worker --loglevel=INFO
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.26
+
+  superset-beat:
+    build:
+      context: ./superset
+      dockerfile: superset.Dockerfile
+    container_name: superset_beat
+    restart: always
+    depends_on:
+      - redis
+      - postgres
+    command: celery --app=superset.tasks.celery_app:app beat --loglevel=INFO
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.27
+
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./minio-data:/data
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.28
+
+  minio-mc:
+    image: minio/mc:latest
+    container_name: minio-mc
+    depends_on:
+      - minio
+    entrypoint: |
+      sh -c "
+      sleep 10 &&
+      mc alias set myminio http://minio:9000 minioadmin minioadmin123 &&
+      mc mb myminio/landing &&
+      mc mb myminio/bronze &&
+      mc mb myminio/silver &&
+      mc mb myminio/gold
+      "
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.29
+
+
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: metastore_db
+      MYSQL_USER: hive
+      MYSQL_PASSWORD: hive
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.2
+
+  metastore:
+    image: apache/hive:standalone-metastore-4.2.0
+    container_name: metastore
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      SERVICE_NAME: metastore
+      DB_DRIVER: mysql
+      SERVICE_OPTS: >
+        -Djavax.jdo.option.ConnectionDriverName=org.mariadb.jdbc.Driver
+        -Djavax.jdo.option.ConnectionURL=jdbc:mariadb://mariadb:3306/metastore_db?createDatabaseIfNotExist=true
+        -Djavax.jdo.option.ConnectionUserName=hive
+        -Djavax.jdo.option.ConnectionPassword=hive
+    ports:
+      - "9083:9083"
+    volumes:
+      - ./warehouse:/opt/hive/data/warehouse
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.3
+
+  trino:
+    image: trinodb/trino:latest
+    container_name: trino
+    restart: always
+    depends_on:
+      - metastore
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./trino/etc:/etc/trino
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.4
+
+
+
+
+
+
+
+volumes:
+  sqlserver-data:
+  postgres_data:
+  minio-data:
+  metastore-db:
+
+
+
+networks:
+  datalake-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.40.0.0/24

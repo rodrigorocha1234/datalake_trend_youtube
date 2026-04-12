@@ -1,0 +1,13 @@
+*iml
+*.xml
+dados_sql_server/*
+minio-data/*
+*#
+
+mariadb_data
+jars
+*.jar
+
+*.pyc
+*.env
+.venv.env

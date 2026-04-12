@@ -1,0 +1,241 @@
+services:
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql_server_db
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrongP@ssw0rd!"
+      MSSQL_TCP_CERT: "TrustServerCertificate"
+      TZ: "America/Sao_Paulo"
+    volumes:
+      - ./dados_sql_server:/var/opt/mssql
+    restart: always
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.22
+
+
+  postgres:
+    image: postgres:15
+    container_name: superset_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: superset
+      POSTGRES_USER: superset
+      POSTGRES_PASSWORD: superset
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.23
+
+  redis:
+    image: redis:7
+    container_name: superset_redis
+    restart: always
+    expose:
+      - "6379"
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.24
+
+  superset:
+    build:
+      context: ./superset
+      dockerfile: superset.Dockerfile
+
+    container_name: superset
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./superset/superset_config.py:/app/superset_config.py
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.25
+
+
+  superset-worker:
+    build:
+      context: ./superset
+      dockerfile: superset.Dockerfile
+    container_name: superset_worker
+    restart: always
+    depends_on:
+      - redis
+      - postgres
+    command: celery --app=superset.tasks.celery_app:app worker --loglevel=INFO
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.26
+
+  superset-beat:
+    build:
+      context: ./superset
+      dockerfile: superset.Dockerfile
+    container_name: superset_beat
+    restart: always
+    depends_on:
+      - redis
+      - postgres
+    command: celery --app=superset.tasks.celery_app:app beat --loglevel=INFO
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.27
+
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./minio-data:/data
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.28
+
+  minio-mc:
+    image: minio/mc:latest
+    container_name: minio-mc
+    depends_on:
+      - minio
+    entrypoint: |
+      sh -c "
+      sleep 10 &&
+      mc alias set myminio http://minio:9000 minioadmin minioadmin123 &&
+      mc mb myminio/landing &&
+      mc mb myminio/bronze &&
+      mc mb myminio/silver &&
+      mc mb myminio/gold
+      "
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.29
+
+
+  mariadb:
+    image: mariadb:10.6
+    container_name: mariadb
+    hostname: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: metastore_db
+      MARIADB_USER: hive
+      MARIADB_PASSWORD: hive
+    healthcheck:
+      test: [ "CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -proot || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.30
+
+  metastore:
+    image: apache/hive:4.0.0
+    container_name: hive-metastore
+    hostname: metastore
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      SERVICE_NAME: metastore
+      DB_DRIVER: mysql
+    ports:
+      - "9083:9083"
+    volumes:
+      - ./warehouse:/opt/hive/data/warehouse
+      - ./jars/mysql-connector-j-8.0.33.jar:/opt/hive/lib/mysql-connector-j.jar
+      - ./hive/conf/core-site.xml:/opt/hive/conf/core-site.xml
+      - ./hive/conf/metastore-site.xml:/opt/hive/conf/metastore-site.xml
+      - ./jars/hadoop-aws-3.3.4.jar:/opt/hive/lib/hadoop-aws.jar
+      - ./jars/aws-java-sdk-bundle-1.12.262.jar:/opt/hive/lib/aws-java-sdk-bundle.jar
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.31
+
+
+
+  trino:
+    image: trinodb/trino:latest
+    container_name: trino
+    hostname: trino
+    depends_on:
+      - metastore
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./trino/etc:/etc/trino
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.32
+
+  dbt_hive:
+    image: ghcr.io/dbt-labs/dbt-core:1.10.0b2
+    container_name: dbt_hive
+    environment:
+      TZ: "America/Sao_Paulo"
+    volumes:
+      - ./dbt:/usr/app/dbt
+    working_dir: /usr/app/dbt
+    entrypoint: /bin/sh
+    ports:
+      - "8081:8081"
+    command: -c "
+      apt-get update && \
+      apt-get install -y gcc g++ libkrb5-dev openssh-server && \
+      mkdir /var/run/sshd && \
+      echo 'root:root' | chpasswd && \
+      sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+      sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+      ssh-keygen -A && \
+      pip install --upgrade pip && \
+      pip install dbt-core && \
+      pip install dbt-hive && \
+      /usr/sbin/sshd && \
+      tail -f /dev/null
+      "
+    networks:
+      datalake-net:
+        ipv4_address: 172.40.0.33
+
+
+
+
+
+
+volumes:
+  sqlserver-data:
+  postgres_data:
+  minio-data:
+  metastore-db:
+  warehouse:
+
+
+
+networks:
+  datalake-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.40.0.0/24

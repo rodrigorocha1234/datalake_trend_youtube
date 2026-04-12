@@ -1,0 +1,53 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "src.config" {
+    class Config {
+        + HOST_LOG : str
+        + DB_LOG : str
+        + PORT_LOG : str
+        + USER_LOG : str
+        + PASSWORD_LOG : str
+    }
+}
+
+package "src.operacao_banco.config" {
+    interface "MSSQLConnect\n<<Protocol>>" as MSSQLConnect {
+        + __call__(*args, **kwargs) : Connection
+    }
+
+    abstract class "IDbConfig<TConn, TDriver>\n<<ABC>>" as IDbConfig {
+        + {abstract} obter_driver() : TDriver
+        + {abstract} obter_parametros_conexao()
+    }
+
+    class "DbConfigSQLServer" as DbConfigSQLServer {
+        + obter_driver() : MSSQLConnect
+        + obter_parametros_conexao() : Tuple
+    }
+}
+
+package "src.operacao_banco.conexao" {
+    interface "ConnectCallable<TConn>\n<<Protocol>>" as ConnectCallable {
+        + __call__(conn_str: str) : TConn
+    }
+}
+
+package "src.utils" {
+    class "LogBanco" as LogBanco {
+        - __idb_config : IDbConfig
+        + __init__(db_config: IDbConfig)
+    }
+}
+
+' Relationships
+IDbConfig <|-- DbConfigSQLServer : implements
+DbConfigSQLServer ..> Config : uses
+DbConfigSQLServer ..> MSSQLConnect : returns
+LogBanco "1" o-- "1" IDbConfig : aggregates (dependency injection)
+
+note top of LogBanco
+  Inherits from logging.Handler
+end note
+
+@enduml
