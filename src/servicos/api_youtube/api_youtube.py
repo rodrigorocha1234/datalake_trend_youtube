@@ -23,32 +23,26 @@ class YoutubeAPI(IApiYoutube):
             self.__youtube.videos().list(
                 part="statistics,contentDetails,snippet",
                 chart="mostPopular",
+                regionCode="BR",  # Brasil
                 maxResults=50,
-                regionCode="BR",
+
                 key=Config.CHAVE_API_YOUTUBE
             ).execute()
             return True
         except Exception as e:
-            self.__conexao_log.logger.error('Erro ao conectar com a API do YouTube', extra={
-                "descricao": "Erro ao conectar com a API do YouTube",
-                "url": 'url Vídeo',
-                "codigo": 500,
-                'requisicao': e
-            })
+            self.__conexao_log.logger.error('Erro ao conectar com a API do YouTube', )
             return False
 
     def obter_video_por_data(self, data_inicio: datetime) -> Generator[Dict, None, None]:
 
-        data_inicio_string = data_inicio.strftime("%Y-%m-%dT%H:%M:%SZ")
         flag_token = True
         token = ''
 
         while flag_token:
-            request = self.__youtube.search().list(
+            request = self.__youtube.videos().list(
                 part="statistics,contentDetails,id,snippet,status, localizations, topicDetails",
                 regionCode="BR",
                 chart="mostPopular",
-                publishedAfter=data_inicio_string,
                 pageToken=token,
                 maxResults=50
 
@@ -57,9 +51,7 @@ class YoutubeAPI(IApiYoutube):
             response = request.execute()
 
             self.__conexao_log.logger.info('Sucesso ao recuperar playlist', extra={
-                "descricao": "Consulta vídeo YouTube",
-                "url": 'url Vídeo',
-                "codigo": 200,
+                'status_code': 200,
                 'requisicao': response
             })
 

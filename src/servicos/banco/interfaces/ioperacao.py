@@ -7,5 +7,5 @@ class IOperacao(Protocol):
     def checar_conexao(self) -> bool:
         ...
 
-    def salvar_dados(self, sql: str, param: Tuple[Any, ...]) -> None:
+    def salvar_dados(self, **kwargs) -> None:
         ...

@@ -1,4 +1,4 @@
-
+import json
 import logging
 from datetime import datetime
 from typing import Literal
@@ -36,8 +36,16 @@ class LogBancoSQLServer(LogBanco):
         requisicao = getattr(record, 'requisicao', None)
         url = getattr(record, 'url', None)
 
+        requisicao = getattr(record, 'requisicao', None)
+
+        if requisicao is not None:
+            try:
+                requisicao = json.dumps(requisicao, ensure_ascii=False)
+            except TypeError:
+                requisicao = str(requisicao)  # fallback seguro
+
         sql = '''
-        INSERT INTO logs (
+        INSERT INTO log_aplicacao (
             [timestamp],
             [level],
             [message],
@@ -66,4 +74,4 @@ class LogBancoSQLServer(LogBanco):
             status_code
         )
 
-        self.__operacao.salvar_dados(dado=(sql, params))
+        self.__operacao.salvar_dados(sql=sql, param=params)
