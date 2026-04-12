@@ -1,6 +1,7 @@
 from typing import Any, Protocol
 
 import mssql_python
+import trino
 from minio import Minio
 
 
@@ -11,4 +12,9 @@ class MSSQLConnect(Protocol):
 
 class MinioConnect(Protocol):
     def __call__(self, *args: Any, **kwargs: Any) -> Minio:
+        ...
+
+
+class TrinoConnect(Protocol):
+    def __call__(self, *args: Any, **kwargs: Any) -> trino.dbapi.Connection:
         ...
