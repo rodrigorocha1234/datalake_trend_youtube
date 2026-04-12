@@ -44,8 +44,9 @@ class LogBancoSQLServer(LogBanco):
                 requisicao = str(requisicao)  # fallback seguro
 
         sql = '''
-              INSERT INTO log_aplicacao ([timestamp],
-                  [ level],
+              INSERT INTO log_aplicacao (
+                  [timestamp],
+                  [level_log],
                   [message],
                   [logger_name],
                   [filename],

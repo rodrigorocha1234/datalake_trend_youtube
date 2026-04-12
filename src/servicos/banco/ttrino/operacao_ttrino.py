@@ -25,7 +25,7 @@ class OperacaoTrino(IOperacao):
             return True
 
         except Exception as e:
-            raise RuntimeError("Falha ao conectar no SQL Server") from e
+            raise RuntimeError("Falha ao conectar no TRINO") from e
 
         finally:
             if con:

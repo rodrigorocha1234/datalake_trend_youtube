@@ -1,10 +1,10 @@
 import trino
 
 conn = trino.dbapi.connect(
-    host="localhost",
+    host="172.40.0.32",
     port=8080,
-    user="test",
-    catalog="system",
+    user="admin",
+    catalog="hive",
     schema="runtime",
 )
 print(type(conn))

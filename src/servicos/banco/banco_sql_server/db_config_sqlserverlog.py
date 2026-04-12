@@ -23,6 +23,6 @@ class DbConfigSQLServerLOG(
             "Encrypt=yes;"
             "TrustServerCertificate=yes;"
         )
-        self.obter_driver()()
+
 
         return ((conn_str,), {})
