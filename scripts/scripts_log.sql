@@ -30,3 +30,5 @@ CREATE TABLE [logs] (
     [requisicao] NVARCHAR(MAX) NULL,
     [status_code] INT NULL
 );
+
+SELECT * FROM logs;
