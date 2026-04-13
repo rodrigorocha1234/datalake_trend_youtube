@@ -13,11 +13,11 @@ GO
 
 
 
+DROP TABLE log_aplicacao;
 
-
-CREATE TABLE [logs] (
+CREATE TABLE [log_aplicacao] (
     [timestamp] DATETIME2 NOT NULL,
-    [level] VARCHAR(50) NOT NULL CHECK ([level] IN ('DEBUG', 'INFO', 'ERRO', 'WARNING', 'CRITICAL')),
+    [level_log] VARCHAR(50) NOT NULL CHECK ([level_log] IN ('DEBUG', 'INFO', 'ERROR', 'WARNING', 'CRITICAL')),
     
     [message] NVARCHAR(MAX) NOT NULL,
     [logger_name] VARCHAR(100) NOT NULL,
@@ -31,4 +31,17 @@ CREATE TABLE [logs] (
     [status_code] INT NULL
 );
 
-SELECT * FROM logs;
+select *
+FROM log_aplicacao;
+
+TRUNCATE TABLE log_aplicacao;
+
+
+INSERT INTO logs
+VALUES ('2026-04-11 20:48:52', 'INFO', 'Teste', 'main_pipeline', 'main_pipeline.py', '<module>', 21, None, None, None, None);
+
+
+
+INSERT INTO logs
+
+VALUE

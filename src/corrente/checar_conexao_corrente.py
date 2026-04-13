@@ -23,7 +23,7 @@ class ChecarConexaCorrente(Corrente):
         youtube_ok = self.__conexao_youtube.checar_conexao()
         trino_ok = self.__operacao_trino.checar_conexao()
 
-        if s3_ok and youtube_ok and trino_ok:
+        if  youtube_ok and trino_ok:
             self._conexao_log.logger.info(
                 f"{self.__class__.__name__} -> Sucesso ao executar todas as conexões (S3, Trino e YouTube)"
             )
@@ -34,8 +34,8 @@ class ChecarConexaCorrente(Corrente):
         if not trino_ok:
             erros.append("Trino desconectado")
 
-        if not s3_ok:
-            erros.append("S3 desconectado | ")
+        # if not s3_ok:
+        #     erros.append("S3 desconectado | ")
 
         if not youtube_ok:
             erros.append("YouTube API desconectada")

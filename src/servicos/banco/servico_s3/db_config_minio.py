@@ -12,10 +12,9 @@ class ConfigS3Minio(IDbConfig):
 
     def obter_parametros_conexao(self) -> Tuple[Tuple[Any, ...], Dict[str, Any]]:
         conn_str = (
-            Config.HOST_S3,
-            Config.PORT_S3,
-            Config.USER_S3,
-            Config.PASSWORD_S3
+            Config.HOST_TRINO,
+            Config.PORT_TRINO,
+            Config.USER_TRINO
         )
 
         return ((conn_str,), {})

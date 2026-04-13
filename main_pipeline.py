@@ -7,7 +7,6 @@ from src.servicos.banco.servico_s3.operacao_minio_s3 import OperacaoMInioS3
 from src.servicos.banco.ttrino.db_config_trino import DbConfigTrino
 from src.servicos.banco.ttrino.operacao_ttrino import OperacaoTrino
 
-
 from src.utils.log_sql_server import LogBancoSQLServer
 
 db_config_log = DbConfigSQLServerLOG()
@@ -25,7 +24,7 @@ config_log = LogBancoSQLServer(
 api_youtube = YoutubeAPI(conexao_log=config_log)
 
 contexto = Contexto()
-configuracao_trino = ConfigS3Minio()
+configuracao_trino = DbConfigTrino()
 
 operacao_trino = OperacaoTrino(configuracao=configuracao_trino)
 p1 = ChecarConexaCorrente(

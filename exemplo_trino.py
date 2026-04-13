@@ -5,7 +5,7 @@ conn = trino.dbapi.connect(
     port=8080,
     user="admin",
     catalog="hive",
-    schema="runtime",
+    schema="runtime ",
 )
 print(type(conn))
 
