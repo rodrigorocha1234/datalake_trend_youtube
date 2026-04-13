@@ -1,5 +1,3 @@
-import trino
-
 from src.contexto.contexto import Contexto
 from src.corrente.corrente import Corrente
 from src.servicos.api_youtube.iapi_youtube import IApiYoutube
@@ -23,7 +21,7 @@ class ChecarConexaCorrente(Corrente):
         youtube_ok = self.__conexao_youtube.checar_conexao()
         trino_ok = self.__operacao_trino.checar_conexao()
 
-        if  youtube_ok and trino_ok:
+        if youtube_ok and trino_ok:
             self._conexao_log.logger.info(
                 f"{self.__class__.__name__} -> Sucesso ao executar todas as conexões (S3, Trino e YouTube)"
             )
