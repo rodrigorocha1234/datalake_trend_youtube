@@ -12,4 +12,5 @@ class BuscarDadosYoutubeCorrente(Corrente):
 
     def executar_processo(self, contexto: Contexto) -> bool:
         dados = self.__youtube_api.obter_video_por_data()
+        contexto.gerador_youtube_trend = dados
         return True
