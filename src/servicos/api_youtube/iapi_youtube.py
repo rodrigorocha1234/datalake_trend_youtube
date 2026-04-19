@@ -1,5 +1,4 @@
-from datetime import datetime
-from typing import Dict, Generator,  Protocol
+from typing import Dict, Generator, Protocol
 
 
 class IApiYoutube(Protocol):
