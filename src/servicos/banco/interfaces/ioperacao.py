@@ -1,12 +1,11 @@
-from abc import ABC, abstractmethod
-from typing import Any
+from typing import Protocol, runtime_checkable, Any
 
 
-class IOperacao(ABC):
-    @abstractmethod
+@runtime_checkable
+class IOperacao(Protocol):
+
     def checar_conexao(self) -> bool:
-        pass
+        ...
 
-    @abstractmethod
     def salvar_dados(self, **kwargs: Any) -> None:
-        pass
+        ...

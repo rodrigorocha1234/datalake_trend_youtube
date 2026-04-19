@@ -3,10 +3,9 @@ from typing import Any
 
 from src.config.config import Config
 from src.servicos.banco.config.idb_config import IDbConfig
-from src.servicos.banco.interfaces.ioperacao import IOperacao
 
 
-class OperacaoMInioS3(IOperacao):
+class OperacaoMInioS3:
     def __init__(self, conexao_s3: IDbConfig):
         self.__conexao_s3 = conexao_s3
         self.__host = Config.HOST_S3

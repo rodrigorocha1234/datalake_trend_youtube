@@ -1,3 +1,5 @@
+from typing import Any
+
 import trino
 
 from src.servicos.banco.config.idb_config import IDbConfig
@@ -6,6 +8,7 @@ from src.servicos.banco.interfaces.protocolo import TrinoConnect
 
 
 class OperacaoTrino(IOperacao):
+
 
     def __init__(self, configuracao: IDbConfig[trino.dbapi.Connection, TrinoConnect]):
         self.__configuracao = configuracao
@@ -37,3 +40,6 @@ class OperacaoTrino(IOperacao):
         finally:
             if con:
                 con.close()
+
+    def salvar_dados(self, **kwargs: Any) -> None:
+        pass
