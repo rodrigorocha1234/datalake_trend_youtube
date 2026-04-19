@@ -1,4 +1,5 @@
 from src.contexto.contexto import Contexto
+from src.corrente.buscar_dados_youtube_corrente import BuscarDadosYoutubeCorrente
 from src.corrente.checar_conexao_corrente import ChecarConexaCorrente
 from src.servicos.api_youtube.api_youtube import YoutubeAPI
 from src.servicos.banco.banco_sql_server.db_config_sqlserverlog import DbConfigSQLServerLOG
@@ -35,5 +36,9 @@ p1 = ChecarConexaCorrente(
     operacao_trino=operacao_trino
 
 )
-
+p2 = BuscarDadosYoutubeCorrente(
+    conexao_log=config_log,
+    youtube_api=api_youtube
+)
+p1.criar_proxima_corrente(p2)
 p1.corrente(contexto=contexto)
