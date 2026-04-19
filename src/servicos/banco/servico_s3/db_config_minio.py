@@ -18,4 +18,3 @@ class ConfigS3Minio(IDbConfig):
         )
 
         return ((conn_str,), {})
-
