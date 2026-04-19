@@ -4,7 +4,7 @@ from src.servicos.banco.interfaces.ioperacao import IOperacao
 from src.utils.Ilog_banco import IlogBanco
 
 
-class SalvarDadosS3(Corrente):
+class SalvarDadosS3Corrente(Corrente):
 
     def __init__(self, conexao_log: IlogBanco, operacao_s3: IOperacao) -> None:
         super().__init__(conexao_log=conexao_log)
@@ -14,11 +14,12 @@ class SalvarDadosS3(Corrente):
         try:
             dados_youtube = contexto.gerador_youtube_trend
             for dado in dados_youtube:
-                self.__operacao_s3.salvar_dados(dado=dado)
+                self.__operacao_s3.salvar_dados(json_youtube=dado)
             return True
         except Exception:
             return False
 
     def executar_processo(self, contexto: Contexto) -> bool:
-
-        return True
+        if self.__salvar_dados_s3(contexto):
+            return True
+        return False

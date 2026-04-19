@@ -10,7 +10,7 @@ from src.servicos.banco.interfaces.protocolo import TrinoConnect
 class OperacaoTrino(IOperacao):
 
 
-    def __init__(self, configuracao: IDbConfig[trino.dbapi.Connection, TrinoConnect]):
+    def __init__(self, configuracao: IDbConfig[TrinoConnect]):
         self.__configuracao = configuracao
 
     def checar_conexao(self):

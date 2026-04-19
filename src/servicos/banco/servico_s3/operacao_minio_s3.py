@@ -1,4 +1,7 @@
+import io
+import json
 import socket
+from datetime import datetime, timezone
 from typing import Any
 
 from minio import Minio
@@ -12,6 +15,8 @@ class OperacaoMInioS3:
         self.__conexao_s3 = conexao_s3
         self.__host = Config.HOST_S3
         self.__port = int(Config.PORT_S3)
+        self.__BUCKET = 'bronze'
+        self.__DATA_ATUAL = datetime.now()
 
     def checar_conexao(self) -> bool:
         try:
@@ -21,10 +26,20 @@ class OperacaoMInioS3:
             return False
 
     def salvar_dados(self, **kwargs: Any) -> None:
+        json_youtube = kwargs['json_youtube']
         driver = self.__conexao_s3.obter_driver()
+        json_data = json.dumps(json_youtube)
+        json_bytes = json_data.encode('utf-8')
+        data_stream = io.BytesIO(json_bytes)
+        nome_objeto = (f'youtube_trend_bronze/ano={self.__DATA_ATUAL.strftime("%Y")}/'
+                       f'mes={self.__DATA_ATUAL.strftime("%m")}/'
+                       f'dia={self.__DATA_ATUAL.strftime("%d")}/'
+                       f'dados_{int(datetime.now(timezone.utc).timestamp())}.json')
 
-
-
-
-
-        pass
+        driver.put_object(
+            bucket_name=self.__BUCKET,
+            object_name=nome_objeto,
+            data=io.BytesIO(json_bytes),
+            length=len(json_bytes),
+            content_type='application/json',
+        )

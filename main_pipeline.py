@@ -1,6 +1,7 @@
 from src.contexto.contexto import Contexto
 from src.corrente.buscar_dados_youtube_corrente import BuscarDadosYoutubeCorrente
 from src.corrente.checar_conexao_corrente import ChecarConexaCorrente
+from src.corrente.salvar_dados_s3_corrente import SalvarDadosS3Corrente
 from src.servicos.api_youtube.api_youtube import YoutubeAPI
 from src.servicos.banco.banco_sql_server.db_config_sqlserverlog import DbConfigSQLServerLOG
 from src.servicos.banco.servico_s3.db_config_minio import ConfigS3Minio
@@ -40,5 +41,13 @@ p2 = BuscarDadosYoutubeCorrente(
     conexao_log=config_log,
     youtube_api=api_youtube
 )
-p1.criar_proxima_corrente(p2)
+p3 = SalvarDadosS3Corrente(
+    conexao_log=config_log,
+    operacao_s3=operacao_s3,
+
+)
+p1.criar_proxima_corrente(p2) \
+    .criar_proxima_corrente(p3)
 p1.corrente(contexto=contexto)
+
+
