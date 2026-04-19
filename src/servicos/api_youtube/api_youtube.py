@@ -33,7 +33,7 @@ class YoutubeAPI(IApiYoutube):
             self.__conexao_log.logger.error('Erro ao conectar com a API do YouTube', )
             return False
 
-    def obter_video_por_data(self, data_inicio: datetime) -> Generator[Dict, None, None]:
+    def obter_video_por_data(self) -> Generator[Dict, None, None]:
 
         flag_token = True
         token = ''

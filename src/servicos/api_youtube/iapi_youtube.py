@@ -9,6 +9,5 @@ class IApiYoutube(Protocol):
 
     def obter_video_por_data(
             self,
-            data_inicio: datetime
     ) -> Generator[Dict, None, None]:
         ...
