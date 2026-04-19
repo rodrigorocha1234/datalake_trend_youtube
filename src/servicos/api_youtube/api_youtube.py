@@ -1,6 +1,3 @@
-
-
-from datetime import datetime
 from typing import Dict, Generator
 
 from googleapiclient.discovery import build  # type: ignore
