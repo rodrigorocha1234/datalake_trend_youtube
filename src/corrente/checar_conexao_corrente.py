@@ -27,20 +27,20 @@ class ChecarConexaCorrente(Corrente):
             )
             return True
 
-        erros = []
+        msg_erro = ""
 
         if not trino_ok:
-            erros.append("Trino desconectado")
+            msg_erro += "Trino desconectado | "
 
-        # if not s3_ok:
-        #     erros.append("S3 desconectado | ")
+        if not s3_ok:
+            msg_erro += "S3 desconectado | "
 
         if not youtube_ok:
-            erros.append("YouTube API desconectada")
+            msg_erro += "YouTube API desconectada"
 
         mensagem_erro = (
                 f"{self.__class__.__name__} -> Falha de conexão: "
-                + " | ".join(erros)
+                + f" | {msg_erro} "
         )
 
         self._conexao_log.logger.error(mensagem_erro)

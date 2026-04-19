@@ -25,8 +25,8 @@ api_youtube = YoutubeAPI(conexao_log=config_log)
 
 contexto = Contexto()
 configuracao_trino = DbConfigTrino()
-
 operacao_trino = OperacaoTrino(configuracao=configuracao_trino)
+
 p1 = ChecarConexaCorrente(
     conexao_log=config_log,
     operacao_s3=operacao_s3,

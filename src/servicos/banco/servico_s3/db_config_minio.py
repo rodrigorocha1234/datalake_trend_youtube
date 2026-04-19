@@ -19,9 +19,3 @@ class ConfigS3Minio(IDbConfig):
 
         return ((conn_str,), {})
 
-#   def checar_conexao(self) -> bool:
-#        try:
-#             with socket.create_connection((self.__host, self.__port), timeout=10):
-#                 return True
-#         except OSError:
-#             return False
