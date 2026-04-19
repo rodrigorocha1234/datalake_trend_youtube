@@ -19,7 +19,7 @@ class ChecarConexaCorrente(Corrente):
         self.__conexao_youtube = conexao_youtube
         self.__operacao_trino = operacao_trino
 
-    def executar_processo(self, contexto: Contexto) -> bool:
+    def __checar_conexao_pipeline(self) -> bool:
         s3_ok = self.__operacao_s3.checar_conexao()
         youtube_ok = self.__conexao_youtube.checar_conexao()
         trino_ok = self.__operacao_trino.checar_conexao()
@@ -49,3 +49,7 @@ class ChecarConexaCorrente(Corrente):
         self._conexao_log.logger.error(mensagem_erro)
 
         return False
+
+
+    def executar_processo(self, contexto: Contexto) -> bool:
+        return self.__checar_conexao_pipeline()
