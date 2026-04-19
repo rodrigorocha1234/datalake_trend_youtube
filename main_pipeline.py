@@ -14,18 +14,19 @@ db_config_log = DbConfigSQLServerLOG()
 configuracao_s3 = ConfigS3Minio()
 operacao_s3 = OperacaoMInioS3(conexao_s3=configuracao_s3)
 
+
 config_log = LogBancoSQLServer(
     configuracao_conexao=db_config_log,
     debug="INFO",
     formato_log="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     nome_pacote="main_pipeline",
 )
-
 api_youtube = YoutubeAPI(conexao_log=config_log)
 
 contexto = Contexto()
 configuracao_trino = DbConfigTrino()
 operacao_trino = OperacaoTrino(configuracao=configuracao_trino)
+
 
 p1 = ChecarConexaCorrente(
     conexao_log=config_log,

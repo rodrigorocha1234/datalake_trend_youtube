@@ -8,7 +8,10 @@ from src.utils.Ilog_banco import IlogBanco
 
 class ChecarConexaCorrente(Corrente):
     def __init__(
-            self, conexao_log: IlogBanco, operacao_s3: IOperacao, conexao_youtube: IApiYoutube,
+            self,
+            conexao_log: IlogBanco,
+            operacao_s3: IOperacao,
+            conexao_youtube: IApiYoutube,
             operacao_trino: IOperacao
     ) -> None:
         super().__init__(conexao_log)
