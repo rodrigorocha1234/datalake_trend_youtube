@@ -19,4 +19,6 @@ class OperacaoMInioS3:
             return False
 
     def salvar_dados(self, **kwargs: Any) -> None:
+        driver = self.__conexao_s3.obter_driver()
+        args, kwargs_conn = self.__conexao_s3.obter_parametros_conexao()
         pass
