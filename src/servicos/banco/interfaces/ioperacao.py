@@ -1,7 +1,6 @@
-from typing import Protocol, runtime_checkable, Any
+from typing import Protocol, Any
 
 
-@runtime_checkable
 class IOperacao(Protocol):
 
     def checar_conexao(self) -> bool:

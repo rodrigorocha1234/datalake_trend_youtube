@@ -1,12 +1,14 @@
 import socket
 from typing import Any
 
+from minio import Minio
+
 from src.config.config import Config
 from src.servicos.banco.config.idb_config import IDbConfig
 
 
 class OperacaoMInioS3:
-    def __init__(self, conexao_s3: IDbConfig):
+    def __init__(self, conexao_s3: IDbConfig[Minio]):
         self.__conexao_s3 = conexao_s3
         self.__host = Config.HOST_S3
         self.__port = int(Config.PORT_S3)
@@ -20,5 +22,9 @@ class OperacaoMInioS3:
 
     def salvar_dados(self, **kwargs: Any) -> None:
         driver = self.__conexao_s3.obter_driver()
-        args, kwargs_conn = self.__conexao_s3.obter_parametros_conexao()
+
+
+
+
+
         pass

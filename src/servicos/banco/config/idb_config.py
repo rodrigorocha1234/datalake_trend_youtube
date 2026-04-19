@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar, Tuple, Dict, Any
 
-TConn = TypeVar("TConn")
+
 TDriver = TypeVar("TDriver")
 
 
-class IDbConfig(ABC, Generic[TConn, TDriver]):
+class IDbConfig(ABC, Generic[TDriver]):
 
     @abstractmethod
     def obter_driver(self) -> TDriver:

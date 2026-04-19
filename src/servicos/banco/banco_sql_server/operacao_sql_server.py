@@ -1,11 +1,12 @@
-from typing import Any, Tuple
+from typing import Any
 
 from src.servicos.banco.config.idb_config import IDbConfig
+from src.servicos.banco.interfaces.protocolo import MSSQLConnect
 
 
 class OperacaoSqlServer:
 
-    def __init__(self, conexao: IDbConfig):
+    def __init__(self, conexao: IDbConfig[MSSQLConnect]):
         self.__conexao = conexao
 
     def checar_conexao(self) -> bool:
@@ -29,7 +30,7 @@ class OperacaoSqlServer:
             if con:
                 con.close()
 
-    def salvar_dados(self,  **kwargs: Any) -> None:
+    def salvar_dados(self, **kwargs: Any) -> None:
         sql, param = kwargs["sql"], kwargs["param"]
 
         driver = self.__conexao.obter_driver()

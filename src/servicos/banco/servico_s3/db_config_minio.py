@@ -1,20 +1,33 @@
-from typing import Any, Dict, Tuple, Type
+from typing import Any, Dict, Tuple, Type, Callable
 
-from minio.api import Minio
+from minio import Minio
 
 from src.config.config import Config
 from src.servicos.banco.config.idb_config import IDbConfig
 
 
 class ConfigS3Minio(IDbConfig):
-    def obter_driver(self) -> Type[Minio]:
-        return Minio
 
+    def obter_driver(self) -> Minio:
+        return Minio(
+            self.obter_parametros_conexao()[0][0],
+            **self.obter_parametros_conexao()[1],
+
+        )
     def obter_parametros_conexao(self) -> Tuple[Tuple[Any, ...], Dict[str, Any]]:
-        conn_str = (
-            Config.HOST_TRINO,
-            Config.PORT_TRINO,
-            Config.USER_TRINO
+        endpoint = f"{Config.HOST_S3}:{Config.PORT_S3}"
+
+        return (
+            (endpoint,),  # args
+            {
+                "access_key": Config.USER_S3,
+                "secret_key": Config.PASSWORD_S3,
+                "secure": False
+            }
         )
 
-        return ((conn_str,), {})
+if __name__ == "__main__":
+    config = ConfigS3Minio()
+    driver = config.obter_driver()
+    a = driver.bucket_exists('bronze')
+    print(a)
