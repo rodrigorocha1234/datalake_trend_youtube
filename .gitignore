@@ -1,5 +1,5 @@
 *iml
-*.xml
+
 dados_sql_server/*
 minio-data/*
 *#
@@ -11,3 +11,4 @@ jars
 *.pyc
 *.env
 .venv.env
+/.idea/*
