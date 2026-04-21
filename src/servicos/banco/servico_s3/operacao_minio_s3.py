@@ -15,7 +15,7 @@ class OperacaoMInioS3:
         self.__conexao_s3 = conexao_s3
         self.__host = Config.HOST_S3
         self.__port = int(Config.PORT_S3)
-        self.__BUCKET = 'bronze'
+        self.__BUCKET = 'datalakeyoutube'
         self.__DATA_ATUAL = datetime.now()
 
     def checar_conexao(self) -> bool:

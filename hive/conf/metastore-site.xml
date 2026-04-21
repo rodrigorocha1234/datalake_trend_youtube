@@ -36,7 +36,7 @@
   <!-- Warehouse no S3 (MinIO) -->
   <property>
     <name>hive.metastore.warehouse.dir</name>
-    <value>s3a://warehouse/</value>
+    <value>s3a://datalakeyoutube/</value>
   </property>
 
   <!-- Evita problemas de autorização -->

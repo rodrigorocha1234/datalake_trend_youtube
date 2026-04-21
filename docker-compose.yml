@@ -117,10 +117,7 @@ services:
       sh -c "
       sleep 10 &&
       mc alias set myminio http://minio:9000 minioadmin minioadmin123 &&
-      mc mb myminio/landing &&
-      mc mb myminio/bronze &&
-      mc mb myminio/silver &&
-      mc mb myminio/gold
+      mc mb myminio/datalakeyoutube
       "
     networks:
       datalake-net:
