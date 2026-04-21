@@ -28,7 +28,7 @@ class OperacaoMInioS3:
     def salvar_dados(self, **kwargs: Any) -> None:
         json_youtube = kwargs['json_youtube']
         driver = self.__conexao_s3.obter_driver()
-        json_data = json.dumps(json_youtube)
+        json_data = json.dumps(json_youtube, ensure_ascii=False)
         json_bytes = json_data.encode('utf-8')
         data_stream = io.BytesIO(json_bytes)
         nome_objeto = (f'youtube_trend_bronze/ano={self.__DATA_ATUAL.strftime("%Y")}/'
