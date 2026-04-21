@@ -1,31 +1,77 @@
 USE hive;
 
+select 1;
 
-CREATE SCHEMA hive.bronze2
+
+
+CREATE SCHEMA IF NOT EXISTS hive.datalake
 WITH (
-    location = 's3a://bronzed/'
+    location = 's3a://datalakeyoutube/'
 );
 
-select 1
 
-select current_timestamp;
-drop table hive.bronze.youtube_videos;
+drop schema hive.datalake;
 
-CREATE TABLE hive.bronze.youtube_videos(
+select a.snippet.publishedat
+from hive.datalake.videos_bronze a ;
+
+drop table hive.datalake.videos_bronze;
+
+
+
+
+---- Deu certo 
+CREATE TABLE hive.datalake.videos_bronze (
     kind VARCHAR,
     etag VARCHAR,
+
     id VARCHAR,
 
     snippet ROW(
-        publishedAt TIMESTAMP,
+        publishedAt VARCHAR,
         channelId VARCHAR,
         title VARCHAR,
         description VARCHAR,
+
+        thumbnails ROW(
+            "default" ROW(
+                url VARCHAR,
+                width INTEGER,
+                height INTEGER
+            ),
+            medium ROW(
+                url VARCHAR,
+                width INTEGER,
+                height INTEGER
+            ),
+            high ROW(
+                url VARCHAR,
+                width INTEGER,
+                height INTEGER
+            ),
+            standard ROW(
+                url VARCHAR,
+                width INTEGER,
+                height INTEGER
+            ),
+            maxres ROW(
+                url VARCHAR,
+                width INTEGER,
+                height INTEGER
+            )
+        ),
+
         channelTitle VARCHAR,
         tags ARRAY(VARCHAR),
         categoryId VARCHAR,
         liveBroadcastContent VARCHAR,
         defaultLanguage VARCHAR,
+
+        localized ROW(
+            title VARCHAR,
+            description VARCHAR
+        ),
+
         defaultAudioLanguage VARCHAR
     ),
 
@@ -38,7 +84,7 @@ CREATE TABLE hive.bronze.youtube_videos(
         projection VARCHAR
     ),
 
-    status ROW(
+    "status" ROW(
         uploadStatus VARCHAR,
         privacyStatus VARCHAR,
         license VARCHAR,
@@ -48,45 +94,36 @@ CREATE TABLE hive.bronze.youtube_videos(
     ),
 
     statistics ROW(
-        viewCount BIGINT,
-        likeCount BIGINT,
-        favoriteCount BIGINT,
-        commentCount BIGINT
+        viewCount VARCHAR,
+        likeCount VARCHAR,
+        favoriteCount VARCHAR,
+        commentCount VARCHAR
     ),
 
     topicDetails ROW(
         topicCategories ARRAY(VARCHAR)
-    )
-)
-WITH (
-    format = 'PARQUET',
-    external_location = 's3a://bronze/youtube_videos/',
-    partitioned_by = ARRAY['dt']
-);
-
-CREATE TABLE hive.bronze.youtube_videos (
-    kind VARCHAR,
-    etag VARCHAR,
-    id VARCHAR,
-    
-    snippet ROW(
-        publishedAt VARCHAR,
-        channelId VARCHAR,
-        title VARCHAR,
-        description VARCHAR,
-        thumbnails ROW(
-            "default" ROW(url VARCHAR, width INTEGER, height INTEGER),
-            medium ROW(url VARCHAR, width INTEGER, height INTEGER),
-            high ROW(url VARCHAR, width INTEGER, height INTEGER),
-            standard ROW(url VARCHAR, width INTEGER, height INTEGER),
-            maxres ROW(url VARCHAR, width INTEGER, height INTEGER)
-        )
     ),
 
-    dt VARCHAR
+    localizations MAP(VARCHAR, ROW(
+        title VARCHAR,
+        description VARCHAR
+    )),
+    ano int,
+    mes int, 
+    dia int
 )
 WITH (
-    format = 'PARQUET',
-    external_location = 's3a://bronze/youtube_videos/',
-    partitioned_by = ARRAY['dt']
+    external_location = 's3a://datalakeyoutube/youtube_trend_bronze/',
+    format = 'JSON',
+    partitioned_by = ARRAY['ano', 'mes', 'dia']
 );
+
+
+
+CALL hive.system.sync_partition_metadata(
+    schema_name => 'datalake',
+    table_name => 'videos_bronze',
+    mode => 'ADD'
+);
+
+
