@@ -31,6 +31,7 @@ CREATE TABLE [log_aplicacao] (
     [status_code] INT NULL
 );
 
+
 select *
 FROM log_aplicacao;
 
