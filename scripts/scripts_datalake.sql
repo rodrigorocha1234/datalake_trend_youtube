@@ -2,7 +2,7 @@ USE hive;
 
 select 1;
 
-
+SHOW SCHEMAS FROM hive;
 
 CREATE SCHEMA IF NOT EXISTS hive.datalake
 WITH (
@@ -12,11 +12,15 @@ WITH (
 
 drop schema hive.datalake;
 
-select a.snippet.publishedat
+
+
+select a.*
 from hive.datalake.videos_bronze a ;
 
 drop table hive.datalake.videos_bronze;
 
+
+SELECT * FROM hive.datalake.videos_bronze
 
 
 

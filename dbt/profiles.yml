@@ -1,0 +1,12 @@
+datalake_trend:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      method: none
+      user: admin
+      host: trino
+      port: 8080
+      database: hive
+      schema: datalake
+      threads: 1

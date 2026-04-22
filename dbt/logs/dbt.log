@@ -1,0 +1,31 @@
+[0m22:32:11.399141 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7362a2651990>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7362a2609850>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7362a4f64310>]}
+
+
+============================== 22:32:11.404853 | 445a9510-e0a8-4a5f-a1fa-6d70f2181415 ==============================
+[0m22:32:11.404853 [info ] [MainThread]: Running with dbt=1.11.8
+[0m22:32:11.405357 [debug] [MainThread]: running dbt with arguments {'partial_parse': 'True', 'target_path': 'None', 'printer_width': '80', 'quiet': 'False', 'warn_error': 'None', 'log_path': 'logs', 'log_format': 'default', 'send_anonymous_usage_stats': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'profiles_dir': '/root/.dbt', 'indirect_selection': 'eager', 'empty': 'None', 'version_check': 'True', 'log_cache_events': 'False', 'no_print': 'None', 'fail_fast': 'False', 'debug': 'False', 'use_colors': 'True', 'cache_selected_only': 'False', 'introspect': 'True', 'use_experimental_parser': 'False', 'write_json': 'True', 'invocation_command': 'dbt init datalake_trend', 'static_parser': 'True'}
+[0m22:32:11.414859 [info ] [MainThread]: Creating dbt configuration folder at /root/.dbt
+[0m22:32:11.416009 [debug] [MainThread]: Starter project path: /usr/local/lib/python3.11/site-packages/dbt/include/starter_project
+[0m22:32:11.418230 [info ] [MainThread]: 
+Your new dbt project "datalake_trend" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m22:32:11.418583 [info ] [MainThread]: Setting up your profile.
+[0m22:32:14.442071 [info ] [MainThread]: Profile datalake_trend written to /root/.dbt/profiles.yml using target's sample configuration. Once updated, you'll be able to start developing with dbt.
+[0m22:32:14.446275 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 3.112188, "process_in_blocks": "96", "process_kernel_time": 0.190479, "process_mem_max_rss": "99284", "process_out_blocks": "128", "process_user_time": 1.332359}
+[0m22:32:14.446682 [debug] [MainThread]: Command `dbt init` succeeded at 22:32:14.446588 after 3.11 seconds
+[0m22:32:14.446964 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7362a25e5c90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7362a25dbdd0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7362a27e3550>]}
+[0m22:32:14.447284 [debug] [MainThread]: Flushing usage events
+[0m22:32:15.233748 [debug] [MainThread]: An error was encountered while trying to flush usage events
