@@ -20,6 +20,9 @@ from
 
 drop table hive.datalake.videos_bronze;
 
+ALTER TABLE hive.datalake.videos_bronze
+ADD COLUMN data_insercao DATE;
+
 SELECT
     *
 FROM
@@ -73,6 +76,7 @@ CREATE TABLE hive.datalake.videos_bronze (
     ),
     topicDetails ROW(topicCategories ARRAY(VARCHAR)),
     localizations MAP(VARCHAR, ROW(title VARCHAR, description VARCHAR)),
+    data_hora_insercao VARCHAR  ,
     ano int,
     mes int,
     dia int
@@ -89,3 +93,4 @@ CALL hive.system.sync_partition_metadata (
     table_name => 'videos_bronze',
     mode => 'ADD'
 );
+

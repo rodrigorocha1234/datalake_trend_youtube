@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: datalake   # <- MUITO IMPORTANTE (ajuste pro seu schema real no Hive/Trino)
+    tables:
+      - name: videos_bronze
