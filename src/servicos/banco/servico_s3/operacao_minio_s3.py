@@ -33,7 +33,7 @@ class OperacaoMInioS3:
         data_stream = io.BytesIO(json_bytes)
         nome_objeto = (f'youtube_trend_bronze/ano={self.__DATA_ATUAL.strftime("%Y")}/'
                        f'mes={self.__DATA_ATUAL.strftime("%m")}/'
-                       f'dia={self.__DATA_ATUAL.strftime("%profiles.yml")}/'
+                       f'dia={self.__DATA_ATUAL.strftime("%d")}/'
                        f'dados_{int(datetime.now(timezone.utc).timestamp())}.json')
 
         driver.put_object(
