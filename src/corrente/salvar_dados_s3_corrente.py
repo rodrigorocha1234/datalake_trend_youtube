@@ -14,6 +14,7 @@ class SalvarDadosS3Corrente(Corrente):
         try:
             dados_youtube = contexto.gerador_youtube_trend
             for dado in dados_youtube:
+
                 self.__operacao_s3.salvar_dados(json_youtube=dado)
             return True
         except Exception:

@@ -27,6 +27,7 @@ class OperacaoMInioS3:
 
     def salvar_dados(self, **kwargs: Any) -> None:
         json_youtube = kwargs['json_youtube']
+        json_youtube['data_hora_insercao'] = self.__DATA_ATUAL.strftime("%d/%m/%Y %H:%M:%S")
         driver = self.__conexao_s3.obter_driver()
         json_data = json.dumps(json_youtube, ensure_ascii=False)
         json_bytes = json_data.encode('utf-8')
